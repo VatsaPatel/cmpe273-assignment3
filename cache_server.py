@@ -15,11 +15,11 @@ class MyDict(dict):
         return key
 
     def get(self, key):
-        value = self[key.decode()]
+        value = self[key]
         return value
 
     def delete(self, key):
-        if self.pop(key.decode()):
+        if self.pop(key):
             return 'success'
 
 class UDPServer():
