@@ -1,18 +1,23 @@
+import math
+
 from bitarray import bitarray
 
 #
 # Bloom Filter ########
-#  Calculation with n=500 & p=0.01
-#  Then k=7 & m=4797
 #
+
+
+NUM_KEYS = 20
+FALSE_POSITIVE_PROBABILITY = 0.05
+
 
 class BloomFilter(object):
 
-    def __init__(self, size=4797):
-        self.size = size
+    def __init__(self, NUM_KEYS, FALSE_POSITIVE_PROBABILITY):
+        self.size = int(-(NUM_KEYS * math.log(FALSE_POSITIVE_PROBABILITY)) / (math.log(2) ** 2))
         self.bloom_filter = bitarray(self.size)
         self.bloom_filter.setall(0)
-        self.number_hash_functions = 7
+        self.number_hash_functions = int((self.size/NUM_KEYS) * math.log(2))
 
     def _hash_djb2(self, s):
         hash_temp = 5381
@@ -33,13 +38,8 @@ class BloomFilter(object):
                 return True
         return False
 
-bloom_filter = BloomFilter()
-# base_ip = "192.168.1."
-# bloom_filter.add(base_ip + str(1))
-#
-# for i in range(1, 100):
-#     if not bloom_filter.is_member(base_ip + str(i)):
-#         print(base_ip + str(i))
+if __name__ == '__main__':
+    bloomfilter = BloomFilter(NUM_KEYS, FALSE_POSITIVE_PROBABILITY)
 
-bloom_filter.add('e621944d55b827774fa6f9813ddeacd9')
-print(bloom_filter.is_member('e621944d55b827774fa6f9813ddeacd9'))
+    bloomfilter.add('e621944d55b827774fa6f9813ddeacd9')
+    print(bloomfilter.is_member('e621944d55b827774fa6f9813ddeacd9'))

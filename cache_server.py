@@ -15,12 +15,14 @@ class MyDict(dict):
         return key
 
     def get(self, key):
-        value = self[key]
-        return value
+        if key in self:
+            value = self[key]
+            return value
 
     def delete(self, key):
-        if self.pop(key):
-            return 'success'
+        if key in self:
+            if self.pop(key):
+                return 'success'
 
 class UDPServer():
     def __init__(self, host, port):
